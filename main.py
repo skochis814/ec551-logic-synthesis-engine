@@ -3,9 +3,11 @@
 file_path = "inputs\\simple_circuit.json"
 
 from python.graph_parser import parse_json, sort_gates, get_primary_inputs, generate_truth_table
+from python.truth_table_exporter import export_truth_table_to_csv
 
 gates = parse_json(file_path)
 sorted_gates = sort_gates(gates)
 sorted_primary_inputs = get_primary_inputs(gates)
 truth_table = generate_truth_table(gates, sorted_gates, sorted_primary_inputs)
 print(truth_table)
+export_truth_table_to_csv(truth_table)
