@@ -1,5 +1,5 @@
 
-# Returns string in form F = (minterm)+(minterm)+...
+# Returns string in form F=(minterm)+(minterm)+...
 def get_canonical_sop(truth_table):
     canonical_sop = []
     onset_inputs = []
@@ -17,13 +17,13 @@ def get_canonical_sop(truth_table):
 
         canonical_sop.append("(" + "".join(minterm) + ")")
         
-    sop_expression = "F = " + "+".join(canonical_sop)
+    sop_expression = "F=" + "+".join(canonical_sop)
 
-    return(sop_expression)
+    print(f"Canonical SOP: {sop_expression}")
 
 
 
-# Returns a string in form F = (maxterm)(maxterm)....
+# Returns a string in form F=(maxterm)(maxterm)....
 def get_canonical_pos(truth_table):
     canonical_pos = []
     offset_inputs = []
@@ -41,9 +41,9 @@ def get_canonical_pos(truth_table):
 
         canonical_pos.append("(" + "+".join(maxterm) + ")")
 
-    pos_expression = "F = " + "".join(canonical_pos)
+    pos_expression = "F=" + "".join(canonical_pos)
 
-    return(pos_expression)
+    print(f"Canonical POS: {pos_expression}")
 
 
 
@@ -64,9 +64,9 @@ def get_inverse_canonical_sop(truth_table):
 
         canonical_sop.append("(" + "".join(minterm) + ")")
         
-    sop_expression = "F' = " + "+".join(canonical_sop)
+    sop_expression = "F'=" + "+".join(canonical_sop)
 
-    return(sop_expression)
+    print(f"Inverse Canonical SOP: {sop_expression}")
 
 
 
@@ -87,6 +87,7 @@ def get_inverse_canonical_pos(truth_table):
 
         canonical_pos.append("(" + "+".join(maxterm) + ")")
 
-    pos_expression = "F' = " + "".join(canonical_pos)
+    pos_expression = "F'=" + "".join(canonical_pos)
 
-    return(pos_expression)
+    print(f"Inverse Canonical POS: {pos_expression}")
+

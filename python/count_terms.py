@@ -1,21 +1,14 @@
-truth_table = {
-    "inputs": ["A", "B", "C"],
-    "rows": [
-        ([0, 0, 0], 0),
-        ([0, 0, 1], 1),
-        ([0, 1, 0], 0),
-        ([0, 1, 1], 1),
-        ([1, 0, 0], 1),
-        ([1, 0, 1], 0),
-        ([1, 1, 0], 0),
-        ([1, 1, 1], 1)
-    ]
-}
 
-def report_minterm_count(truth_table):
+def report_onset_minterm_count(truth_table):
     count = 0
-    for output in truth_table["rows"]:
+    for input_vales, output in truth_table["rows"]:
         if output == 1:
-            print(output)
+            count += 1
+    print(f"Total number of ON-Set minterms: {count}")
 
-report_minterm_count(truth_table)
+def report_offset_maxterm_count(truth_table):
+    count = 0
+    for input_vales, output in truth_table["rows"]:
+        if output == 0:
+            count += 1
+    print(f"Total number of OFF-Set maxterms: {count}")
