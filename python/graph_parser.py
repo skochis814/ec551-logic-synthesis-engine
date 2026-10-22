@@ -50,12 +50,13 @@ def get_primary_inputs(gates):
 
 
 
-# Returns the truth table as dictionary containing list ofsorted inputs and list of tuples
+# Returns the truth table as dictionary containing list of sorted inputs and list of tuples
 # Tuples contain the input combination and the corresponding output value
 # Parameter gates is a dictionary mapping gate IDs to their types and inputs
 # Parameter sorted_gates is a list of gate IDs in topologically sorted order
 # Parameter sorted_primary_inputs is a list of primary input IDs
 def generate_truth_table(gates, sorted_gates, sorted_primary_inputs):
+
     # AI WAS USED TO EFFICIENTLY FIND ALL INPUT COMBINATIONS (specifically the product function from itertools)
     all_combinations = list(product([0, 1], repeat=len(sorted_primary_inputs)))
     last_gate_id = sorted_gates[len(sorted_gates) - 1]
@@ -90,5 +91,5 @@ def generate_truth_table(gates, sorted_gates, sorted_primary_inputs):
 
         output_value = gate_outputs[last_gate_id]
         truth_table.append((combination, output_value))
-    return {"inputs": sorted_primary_inputs, "truth_table": truth_table}
+    return {"inputs": sorted_primary_inputs, "rows": truth_table}
 
