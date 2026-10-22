@@ -1,5 +1,8 @@
 # ec551-logic-synthesis-engine
 
+## truth table representation
+
+{'inputs': ['A', 'B', 'C'], 'rows': [((0, 0, 0), 0), ((0, 0, 1), 1), ((0, 1, 0), 0), ((0, 1, 1), 1), ((1, 0, 0), 0), ((1, 0, 1), 1), ((1, 1, 0), 1), ((1, 1, 1), 1)]}
 
 ## JSON Structure
 

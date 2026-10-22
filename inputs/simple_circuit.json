@@ -1,18 +1,15 @@
 
 {
   "nodes": [
-    {"id": "g10", "type": "OR", "inputs": ["g9", "g1"]},
-    {"id": "g2", "type": "XOR", "inputs": ["C", "D"]},
-    {"id": "g3", "type": "NOT", "inputs": ["E"]},
-    {"id": "g4", "type": "NAND", "inputs": ["g1", "g2"]},
-    {"id": "g5", "type": "OR", "inputs": ["g3", "B"]},
-    {"id": "g6", "type": "NOR", "inputs": ["g4", "g5"]},
-    {"id": "g7", "type": "XNOR", "inputs": ["A", "g2", "E"]},
-    {"id": "g8", "type": "AND", "inputs": ["g6", "g7"]},
-    {"id": "g9", "type": "XOR", "inputs": ["g8", "D"]},
-    {"id": "g1", "type": "AND", "inputs": ["A", "B"]}
-    
+    {
+      "id": "g1",
+      "type": "AND",
+      "inputs": ["A", "B"]
+    },
+    {
+      "id": "g2",
+      "type": "OR",
+      "inputs": ["g1", "C"]
+    }
   ]
 }
-
-
