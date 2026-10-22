@@ -55,7 +55,7 @@ def get_primary_inputs(gates):
 # Parameter gates is a dictionary mapping gate IDs to their types and inputs
 # Parameter sorted_gates is a list of gate IDs in topologically sorted order
 # Parameter sorted_primary_inputs is a list of primary input IDs
-def generate_truth_table(gates, sorted_gates, sorted_primary_inputs):
+def generate_truth_table_from_graph(gates, sorted_gates, sorted_primary_inputs):
 
     # AI WAS USED TO EFFICIENTLY FIND ALL INPUT COMBINATIONS (specifically the product function from itertools)
     all_combinations = list(product([0, 1], repeat=len(sorted_primary_inputs)))
