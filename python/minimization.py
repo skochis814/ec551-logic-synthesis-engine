@@ -48,3 +48,30 @@ def find_PIs(minterms):
 
         terms = loopPI
     return PIs
+
+def find_EPIs(truth_table):
+    minterms = minterm_converter(truth_table)
+    PIs = find_PIs(minterms)
+
+    EPIs = []
+    cover_count = [0] * len(minterms)
+    pi_match = [""] * len(minterms)
+
+    for i in range(len(minterms)):
+        for PI in PIs:
+            match = True
+
+            for j in range(len(minterms[i])):
+                if PI[j] != "-" and minterms[i][j] != PI[j]:
+                    match = False
+
+            if match:
+                cover_count[i] += 1
+                pi_match[i] = PI
+
+    for i in range(len(minterms)):
+        if cover_count[i] == 1 and pi_match[i] not in EPIs:
+            EPIs.append(pi_match[i])
+
+    return EPIs
+
