@@ -40,7 +40,7 @@ def sort_gates(gates):
 
 # Return list of primary input IDs
 # Parameter gates is a dictionary mapping gate IDs to their types and inputs
-def get_primary_inputs(gates):
+def get_primary_inputs_from_graph(gates):
     primary_inputs = set()
     for gate_id in gates:
         for input in gates[gate_id]["inputs"]:
@@ -64,30 +64,30 @@ def generate_truth_table_from_graph(gates, sorted_gates, sorted_primary_inputs):
 
     # Iterate over all input combinations to generate the truth table
     for combination in all_combinations:
-        primary_input_values = dict(zip(sorted_primary_inputs, combination))
+        primary_input_vals = dict(zip(sorted_primary_inputs, combination))
         gate_outputs = {}
         for gate_id in sorted_gates:
-            input_values = []
+            input_vals = []
             for input in gates[gate_id]["inputs"]:
                 if input in gates:
-                    input_values.append(gate_outputs[input])
+                    input_vals.append(gate_outputs[input])
                 else:
-                    input_values.append(primary_input_values[input])
+                    input_vals.append(primary_input_vals[input])
             
             if gates[gate_id]["type"] == "AND":
-                gate_outputs[gate_id] = int(all(input_values))
+                gate_outputs[gate_id] = int(all(input_vals))
             elif gates[gate_id]["type"] == "OR":
-                gate_outputs[gate_id] = int(any(input_values))
+                gate_outputs[gate_id] = int(any(input_vals))
             elif gates[gate_id]["type"] == "NOT":
-                gate_outputs[gate_id] = int(not input_values[0])
+                gate_outputs[gate_id] = int(not input_vals[0])
             elif gates[gate_id]["type"] == "XOR":
-                gate_outputs[gate_id] = int(sum(input_values) % 2)
+                gate_outputs[gate_id] = int(sum(input_vals) % 2)
             elif gates[gate_id]["type"] == "NAND":
-                gate_outputs[gate_id] = int(not all(input_values))
+                gate_outputs[gate_id] = int(not all(input_vals))
             elif gates[gate_id]["type"] == "NOR":
-                gate_outputs[gate_id] = int(not any(input_values))
+                gate_outputs[gate_id] = int(not any(input_vals))
             elif gates[gate_id]["type"] == "XNOR":
-                gate_outputs[gate_id] = int(sum(input_values) % 2 == 0)
+                gate_outputs[gate_id] = int(sum(input_vals) % 2 == 0)
 
         output_value = gate_outputs[last_gate_id]
         truth_table.append((combination, output_value))
