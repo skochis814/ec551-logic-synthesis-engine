@@ -1,3 +1,5 @@
+from itertools import combinations
+
 def minterm_converter(truth_table):
     minterms = []
     for input_vals, output in truth_table["rows"]:
@@ -8,7 +10,8 @@ def minterm_converter(truth_table):
             minterms.append(minterm)
     return minterms
 
-def find_PIs(minterms):
+def find_PIs(truth_table):
+    minterms = minterm_converter(truth_table)
     terms = minterms.copy()
     PIs = []
     merges = 1
@@ -51,7 +54,7 @@ def find_PIs(minterms):
 
 def find_EPIs(truth_table):
     minterms = minterm_converter(truth_table)
-    PIs = find_PIs(minterms)
+    PIs = find_PIs(truth_table)
 
     EPIs = []
     cover_count = [0] * len(minterms)
@@ -75,3 +78,120 @@ def find_EPIs(truth_table):
 
     return EPIs
 
+def minimize(truth_table, pos):
+    if pos:
+        truth_table = {
+            "inputs": truth_table["inputs"],
+            "rows": [(input_vals, 1-output) for input_vals, output in truth_table["rows"]]
+        }
+
+    minterms = minterm_converter(truth_table)
+    PIs = find_PIs(truth_table)
+    EPIs = find_EPIs(truth_table)
+
+    minimized = EPIs.copy()
+    cover_count = [0] * len(minterms)
+
+    for i in range(len(minterms)):
+        for EPI in EPIs:
+            match = True
+
+            for j in range(len(minterms[i])):
+                if EPI[j] != "-" and minterms[i][j] != EPI[j]:
+                    match = False
+
+            if match:
+                cover_count[i] += 1
+
+    missing_terms = []
+
+    for i in range(len(minterms)):
+        if cover_count[i] == 0:
+            missing_terms.append(minterms[i])
+
+    remaining_PIs = []
+    for PI in PIs:
+        if PI not in EPIs:
+            remaining_PIs.append(PI)
+
+    if len(missing_terms) != 0:
+        successful_combinations = []
+        counter = 0
+
+        for size in range(1, len(remaining_PIs) + 1):
+            for comb in combinations(remaining_PIs, size):
+                remaining_clone = missing_terms.copy()
+
+                for PI in comb:
+                    for minterm in missing_terms:
+                        match = True
+
+                        for j in range(len(minterm)):
+                            if PI[j] != "-" and minterm[j] != PI[j]:
+                                match = False
+
+                        if match and minterm in remaining_clone:
+                            remaining_clone.remove(minterm)
+
+                if len(remaining_clone) == 0:
+                    successful_combinations.append(comb)
+                    counter += 1
+
+            if counter > 0:
+                break
+
+        free_count = [0] * len(successful_combinations)
+
+        for i in range(len(successful_combinations)):
+            for minterm in successful_combinations[i]:
+                for lit in minterm:
+                    if lit == "-":
+                        free_count[i] += 1
+
+        minimized.extend(successful_combinations[free_count.index(max(free_count))])
+
+    terms = []
+
+    if pos:  
+        for pattern in minimized:
+            literals = []
+
+            for i in range(len(pattern)):
+                variable = truth_table["inputs"][i]
+
+                if pattern[i] == "0":
+                    literals.append(variable)
+                elif pattern[i] == "1":
+                    literals.append(variable + "'")
+
+            if len(literals) == 0:
+                return "F=0"
+
+            terms.append("(" + "+".join(literals) + ")")
+
+        if len(terms) == 0:
+            return "F=1"
+
+        return "F=" + "".join(terms)
+
+    else:  
+        for pattern in minimized:
+            literals = []
+
+            for i in range(len(pattern)):
+                variable = truth_table["inputs"][i]
+
+                if pattern[i] == "1":
+                    literals.append(variable)
+                elif pattern[i] == "0":
+                    literals.append(variable + "'")
+
+            if len(literals) == 0:
+                return "F=1"
+
+            terms.append("(" + "".join(literals) + ")")
+
+        if len(terms) == 0:
+            return "F=0"
+
+        return "F=" + "+".join(terms)
