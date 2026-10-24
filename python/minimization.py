@@ -150,6 +150,15 @@ def minimize(truth_table, pos):
 
         minimized.extend(successful_combinations[free_count.index(max(free_count))])
 
+    minimized_literals = 0
+    for pattern in minimized:   
+        for char in pattern:
+            if char != "-":
+                minimized_literals += 1
+
+    literals_saved = canonical_literals - minimized_literals
+    print(f"Literals saved: {literals_saved}")
+    
     terms = []
 
     if pos:  
