@@ -6,6 +6,9 @@ from python.boolean_func import read_text, get_primary_inputs_from_boolean, gene
 from python.canonical import get_canonical_sop, get_canonical_pos, get_inverse_canonical_sop, get_inverse_canonical_pos
 from python.count_terms import report_onset_minterm_count, report_offset_maxterm_count
 from python.truth_table_exporter import export_truth_table_to_csv
+from python.minimization import count_PIs, count_EPIs, min_SOP, min_POS
+from python.verilog_gen import generate_verilog
+from python.delay_estimate import estimate_delay
 
 file_path = Path(sys.argv[1])
 
@@ -34,3 +37,17 @@ print("\n")
 report_offset_maxterm_count(truth_table)
 
 export_truth_table_to_csv(truth_table)
+
+print("\n")
+min_SOP(truth_table)
+print("\n")
+min_POS(truth_table)
+print("\n")
+
+print(f"Prime Implicants: {count_PIs(truth_table)}")
+print(f"Essential Prime Implicants: {count_EPIs(truth_table)}")
+
+generate_verilog(truth_table)
+print("Verilog generated: generated.v")
+
+estimate_delay(truth_table)
