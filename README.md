@@ -73,8 +73,7 @@ The delay estimate assumes AND = 2 ns, OR = 2 ns, and NOT = 1 ns.
 It adds an AND delay when at least one term exists, an OR delay when
 multiple terms exist, and a NOT delay when any complemented literal exists.
 
-This is a simplified estimate, not measured FPGA timing. It charges an
-AND delay even for single-literal terms that the generator connects directly.
+This is a simplified estimate, not measured FPGA timing. 
 
 ## AI Usage
 
