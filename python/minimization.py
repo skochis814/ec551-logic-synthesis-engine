@@ -150,57 +150,95 @@ def minimize(truth_table, pos):
 
         minimized.extend(successful_combinations[free_count.index(max(free_count))])
 
-    minimized_literals = 0
-    for pattern in minimized:   
-        for char in pattern:
-            if char != "-":
-                minimized_literals += 1
-
-    literals_saved = canonical_literals - minimized_literals
-    print(f"Literals saved: {literals_saved}")
+    return minimized
     
+def count_PIs(truth_table):
+    PIs = find_PIs(truth_table)
+    length = len(PIs)
+
+    return length
+
+def count_EPIs(truth_table):
+    EPIs = find_EPIs(truth_table)
+    length = len(EPIs)
+
+    return length
+
+def min_SOP(truth_table):
+    minimized = minimize(truth_table, False)
+
+    canonical_count = len(minterm_converter(truth_table)) * len(truth_table["inputs"])
+    minimized_count = 0
+
+    for term in minimized:
+        for char in term:
+            if char != "-":
+                minimized_count += 1
+
+    print(f"Literals saved: {canonical_count - minimized_count}")
+
     terms = []
 
-    if pos:  
-        for pattern in minimized:
-            literals = []
+    for term in minimized:
+        literals = []
 
-            for i in range(len(pattern)):
-                variable = truth_table["inputs"][i]
+        for i in range(len(term)):
+            variable = truth_table["inputs"][i]
 
-                if pattern[i] == "0":
-                    literals.append(variable)
-                elif pattern[i] == "1":
-                    literals.append(variable + "'")
+            if term[i] == "1":
+                literals.append(variable)
+            elif term[i] == "0":
+                literals.append(variable + "'")
 
-            if len(literals) == 0:
-                return "F=0"
-
-            terms.append("(" + "+".join(literals) + ")")
-
-        if len(terms) == 0:
+        if len(literals) == 0:
+            print("Minimized SOP: F=1")
             return "F=1"
 
-        return "F=" + "".join(terms)
+        terms.append("(" + "".join(literals) + ")")
 
-    else:  
-        for pattern in minimized:
-            literals = []
+    expression = "F=" + "+".join(terms) if terms else "F=0"
+    print(f"Minimized SOP: {expression}")
+    return expression
 
-            for i in range(len(pattern)):
-                variable = truth_table["inputs"][i]
 
-                if pattern[i] == "1":
-                    literals.append(variable)
-                elif pattern[i] == "0":
-                    literals.append(variable + "'")
+def min_POS(truth_table):
+    minimized = minimize(truth_table, True)
 
-            if len(literals) == 0:
-                return "F=1"
+    maxterm_count = 0
+    for input_vals, output in truth_table["rows"]:
+        if output == 0:
+            maxterm_count += 1
 
-            terms.append("(" + "".join(literals) + ")")
+    canonical_count = maxterm_count * len(truth_table["inputs"])
+    minimized_count = 0
 
-        if len(terms) == 0:
+    for term in minimized:
+        for char in term:
+            if char != "-":
+                minimized_count += 1
+
+    print(f"Literals saved: {canonical_count - minimized_count}")
+
+    terms = []
+
+    for term in minimized:
+        literals = []
+
+        for i in range(len(term)):
+            variable = truth_table["inputs"][i]
+
+            if term[i] == "0":
+                literals.append(variable)
+            elif term[i] == "1":
+                literals.append(variable + "'")
+
+        if len(literals) == 0:
+            print("Minimized POS: F=0")
             return "F=0"
 
-        return "F=" + "+".join(terms)
+        terms.append("(" + "+".join(literals) + ")")
+
+    expression = "F=" + "".join(terms) if terms else "F=1"
+    print(f"Minimized POS: {expression}")
+    return expression
+
