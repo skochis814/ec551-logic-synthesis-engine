@@ -64,6 +64,11 @@ The search minimizes the number of terms, then minimizes literals among
 covers with that term count. It does not guarantee the globally smallest
 literal count across larger covers.
 
+## FPGA Deployment
+
+`fpga_top.v` is a handwritten wrapper connecting the generated module’s
+A–E inputs to five switches and its F output to an LED.
+
 ## Custom Features
 
 1. Truth-table CSV export.
