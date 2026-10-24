@@ -41,6 +41,7 @@ the selected binary terms into primitive gates and direct connections.
 
 ```text
 main.py
+fpga_top.v
 inputs/
 python/
     boolean_func.py
@@ -50,7 +51,7 @@ python/
     truth_table_exporter.py
     minimization.py
     verilog_gen.py
-    delay_estimation.py
+    delay_estimate.py
 ```
 
 ## Minimization
